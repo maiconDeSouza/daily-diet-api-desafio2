@@ -6,7 +6,7 @@
     - Method: POST
     - Route; /users
     - body: 
-    ```json
+    ```javascript
     "name": "Nome do usuário",
     "email": "email@example.com",
     "password": "senha"        
