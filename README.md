@@ -5,8 +5,9 @@
 ### Criar um usuário
     - Method: POST
     - Route; /users
-    - body: ```json
-                "name": "Nome do usuário",
-                "email": "email@example.com",
-                "password": "senha"
+    - body: 
+    ```json
+    "name": "Nome do usuário",
+    "email": "email@example.com",
+    "password": "senha"        
      ```
