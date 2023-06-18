@@ -3,11 +3,13 @@
 ## Usuários
 
 ### Criar um usuário
-    - Method: POST
-    - Route; /users
-    - body: 
-    ```javascript
-    "name": "Nome do usuário",
-    "email": "email@example.com",
-    "password": "senha"        
-     ```
+ - Method: POST
+ - Route; /users
+ - body:
+ ```json
+ {
+	"name": "Nome do usuário",
+	"email": "email@example.com",
+	"password": "senha" 
+ } 
+ ```
