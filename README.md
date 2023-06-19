@@ -123,7 +123,7 @@
 
 ## Todolist
 - Banco
-- [x] Criar Banco - obs: nunca criei dois duas tabelas que se relacionam.
+- [ x ] Criar Banco - obs: nunca criei dois duas tabelas que se relacionam.
 
 - Usuários 
 - [ ] Criar um usuário
