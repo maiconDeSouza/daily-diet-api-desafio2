@@ -1,7 +1,8 @@
 import { app } from './app'
+import { routeUsers } from './routes/routeUsers'
 
-app.get('/', () => {
-  return `ok`
+app.register(routeUsers, {
+  prefix: 'users',
 })
 
 app

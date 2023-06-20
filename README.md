@@ -126,7 +126,7 @@
 - [x] Criar Banco - obs: nunca criei dois duas tabelas que se relacionam.
 
 - Usuários 
-- [ ] Criar um usuário
+- [x] Criar um usuário
 - [ ] Login de usuário
 
 - Refeições
@@ -168,3 +168,11 @@ Percebi que esqueci de mencionar o uso do JWT (JSON Web Token). Vou precisar ass
 Estou planejando incorporar o uso do JWT para lidar com autenticação e autorização na API. Aparentemente é mais utilizado.
 
 Além disso, decidi utilizar a biblioteca Zod para fazer a validação dos tipos de dados na API. Isso ajudará a garantir a integridade dos dados que serão recebidos e enviados pela API.
+
+#### Segunda Parte
+
+Durante esta segunda parte, tive um tempo limitado disponível, mas consegui concluir a primeira rota de criação de usuário. Para garantir a segurança da senha, utilizei a biblioteca nativa do Node.js para criptografia. Esta é a primeira vez que utilizo essa biblioteca, já que em projeto anterior eu havia utilizado o Bcrypt.
+
+Agora, o próximo passo será implementar a lógica para autenticação de usuário e geração de tokens JWT. Para isso, vou explorar mais sobre a biblioteca JWT e buscar exemplos e tutoriais que me auxiliem na implementação correta.
+
+Continuarei atualizando este README com informações diárias sobre o progresso do projeto.
