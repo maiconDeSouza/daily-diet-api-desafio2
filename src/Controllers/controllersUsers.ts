@@ -11,6 +11,13 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
     password: z.string().min(5),
   })
 
+  const result = createUserSchema.safeParse(request.body)
+
+  if (!result.success) {
+    console.log(result.error)
+    throw result.error.message
+  }
+
   try {
     const { name, nickname, email, password } = createUserSchema.parse(
       request.body,
@@ -26,12 +33,8 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
     replay.status(201).send({
       message: `User Created Successfully`,
     })
-  } catch (error: any) {
-    replay.status(error.number).send({
-      name: error.name,
-      message: error.message,
-      description: error.description,
-    })
+  } catch (error) {
+    replay.send(error)
   }
 }
 
