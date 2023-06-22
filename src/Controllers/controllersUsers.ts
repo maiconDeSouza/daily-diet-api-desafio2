@@ -14,8 +14,7 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
   const result = createUserSchema.safeParse(request.body)
 
   if (!result.success) {
-    console.log(result.error)
-    throw result.error.message
+    return replay.status(409).send(result.error)
   }
 
   try {
