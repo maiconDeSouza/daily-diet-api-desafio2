@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import {
   createMeals,
+  deletarMeals,
   getAllMeals,
   getUniqueMeals,
   updateMeals,
@@ -11,4 +12,5 @@ export async function routeMeals(app: FastifyInstance) {
   app.put('/:mealId', updateMeals)
   app.get('/', getAllMeals)
   app.get('/:mealId', getUniqueMeals)
+  app.delete('/:mealId', deletarMeals)
 }

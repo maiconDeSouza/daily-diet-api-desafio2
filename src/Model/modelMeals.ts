@@ -63,9 +63,20 @@ async function prismaGetUniqueMeals(usersId: string, mealsID: string) {
   return responseDB
 }
 
+async function prismaDeleteMeal(usersId: string, mealsID: string) {
+  const responseDB = await prismaClient.meals.deleteMany({
+    where: {
+      AND: [{ usersId }, { id: mealsID }],
+    },
+  })
+
+  return responseDB
+}
+
 export {
   prismaCreateMeals,
   prismaUpdateMeals,
   prismaGetAllMeals,
   prismaGetUniqueMeals,
+  prismaDeleteMeal,
 }

@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import {
   prismaCreateMeals,
+  prismaDeleteMeal,
   prismaGetAllMeals,
   prismaGetUniqueMeals,
   prismaUpdateMeals,
@@ -122,7 +123,7 @@ async function getUniqueMeals(request: FastifyRequest, reply: FastifyReply) {
 
   if (responseGetUniqueMeals) {
     reply.status(200).send({
-      message: `Lista da lista das últimas refeições!`,
+      message: `Refeição selecionada!`,
       meal: responseGetUniqueMeals,
     })
   } else {
@@ -132,4 +133,30 @@ async function getUniqueMeals(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-export { createMeals, updateMeals, getAllMeals, getUniqueMeals }
+async function deletarMeals(request: FastifyRequest, reply: FastifyReply) {
+  const schemaID = z.object({
+    sub: z.string(),
+  })
+  const schemaParams = z.object({
+    mealId: z.string(),
+  })
+
+  await request.jwtVerify()
+  const { mealId } = schemaParams.parse(request.params)
+  const { sub } = schemaID.parse(request.user)
+
+  const responseGetUniqueMeals = await prismaDeleteMeal(sub, mealId)
+
+  if (responseGetUniqueMeals.count !== 0) {
+    reply.status(200).send({
+      message: `Refeição deletada`,
+      meal: responseGetUniqueMeals,
+    })
+  } else {
+    reply.status(400).send({
+      message: `Refeição não encontrada`,
+    })
+  }
+}
+
+export { createMeals, updateMeals, getAllMeals, getUniqueMeals, deletarMeals }
