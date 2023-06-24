@@ -3,6 +3,7 @@ import {
   createMeals,
   deletarMeals,
   getAllMeals,
+  getMetrics,
   getUniqueMeals,
   updateMeals,
 } from '../Controllers/controllersMeals'
@@ -13,4 +14,5 @@ export async function routeMeals(app: FastifyInstance) {
   app.get('/', getAllMeals)
   app.get('/:mealId', getUniqueMeals)
   app.delete('/:mealId', deletarMeals)
+  app.get('/metrics', getMetrics)
 }

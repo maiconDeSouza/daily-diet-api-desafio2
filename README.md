@@ -1,5 +1,51 @@
 # daily-diet-api-desafio2
 
+## Como executar o projeto
+
+Antes de executar o projeto, certifique-se de ter as seguintes dependências instaladas:
+
+- Node.js (versão 16 ou superior)
+- npm (geralmente vem junto com o Node.js)
+
+Agora, siga as etapas abaixo:
+
+1. Clone o repositório para sua máquina local:
+```bash
+git clone https://github.com/maiconDeSouza/daily-diet-api-desafio2.git
+```
+
+2. Acesse o diretório do projeto:
+```bash
+cd daily-diet-api-desafio2
+```
+
+3. Instale as dependências do projeto:
+```bash
+npm install
+```
+
+4. Configuração do Prisma:
+
+- Renomeie o arquivo `.env.example` para `.env` e preencha as variáveis de ambiente necessárias, como as informações de conexão do banco de dados. OBS: o endereço do banco já está preenchido, pois ele irá criar um banco sqlite localmente na sua máquina.
+    
+- Execute o seguinte comando para gerar o arquivo de configuração do Prisma com base no arquivo `.env`:
+```bash
+npx prisma generate
+```
+
+- Execute o seguinte comando para criar as tabelas do banco de dados definidas no Prisma:
+```bash
+npx prisma migrate dev
+```
+- Ele pedirá para você dar u nome para a migrates, escolha a da sua preferencia 
+
+5. Execute o projeto:
+```bash
+npm start:dev
+```
+- O servidor deve iniciar e estar disponível no endereço que e setou no .env para variável PORT por exemplo `http://localhost:2005.
+
+
 ## Usuários 
 
 ### Criar um usuário
@@ -8,11 +54,11 @@
  - body:
  ```json
  {
-	"id": "uuid - @un",
 	"name": "Nome do usuário",
 	"nickname":"a escolha do usuário - @un",
 	"email": "email@example.com - @un",
-	"password": "senha" 
+	"password": "senha",
+	"rPassword": "repetir a senha" 
  } 
  ```
 
@@ -38,16 +84,14 @@
 
 #### Registrar uma refeição
 -   Method: POST
--   Route: `/login`
+-   Route: `/meals`
 -   Header: `"token": "token_de_autenticacao"`
 -   body:
 ```json
 {
-  "id":"uuid",
   "name": "Nome da refeição",
   "description": "Descrição da refeição",
-  "datetime": "2023-05-15T12:00:00",
-  "isDietMeal": true
+  "isDietMeal": true //boleano
 }
 ```
 
@@ -60,8 +104,7 @@
 {
   "name": "Novo nome da refeição",
   "description": "Nova descrição da refeição",
-  "datetime": "2023-05-16T08:30:00",
-  "isDietMeal": false
+  "isDietMeal": false //boleano
 }
 ```
 
@@ -127,14 +170,15 @@
 
 - Usuários 
 - [x] Criar um usuário
-- [ ] Login de usuário
+- [x] Login de usuário
 
 - Refeições
-- [ ] Registrar uma refeição
-- [ ] Editar uma refeição
-- [ ] Listar todas as refeições
-- [ ] Visualizar uma única refeição
-- [ ] Métricas do usuário
+- [x] Registrar uma refeição
+- [x] Editar uma refeição
+- [x] Listar todas as refeições
+- [x] Visualizar uma única refeição
+- [x] Deletar uma refeição
+- [x] Métricas do usuário
 
 ## Relátório do Projeto
 ---
@@ -150,7 +194,7 @@ Quanto às tecnologias, estou considerando utilizar as seguintes para criar esta
 
 Observação: No projeto anterior da API de tarefas, utilizei o Prisma com sucesso, mesmo que esse seja um assunto que veremos mais adiante no curso. Decidi utilizá-lo novamente por sua eficiência e praticidade.
 
-Acredito que isso seja tudo por hoje. Caso eu tenha esquecido de mencionar algo, vou atualizar este README, que funcionará como um diário do meu projeto.
+ Acredito que isso seja tudo por hoje. Caso eu tenha esquecido de mencionar algo, vou atualizar este README, que funcionará como um diário do meu projeto.
 ----
 ### Relatório Diário - Dia 2 - 19-06-23
 
@@ -176,3 +220,20 @@ Durante esta segunda parte, tive um tempo limitado disponível, mas consegui con
 Agora, o próximo passo será implementar a lógica para autenticação de usuário e geração de tokens JWT. Para isso, vou explorar mais sobre a biblioteca JWT e buscar exemplos e tutoriais que me auxiliem na implementação correta.
 
 Continuarei atualizando este README com informações diárias sobre o progresso do projeto.
+
+### Relatório Diário - Dia 3 - 24-06-23
+
+Passei alguns dias sem conseguir mexer no projeto, mas consegui finalizá-lo.
+
+Entreguei com todas as funcionalidades solicitadas. 
+
+Tecnologias usadas:
+- **Fastify** como framework web;
+- **@fastify/jwt** para permitir que apenas pessoas logadas possam cadastrar refeições e que cada pessoa tenha acesso apenas às suas refeições - ainda não foi um assunto abordado no curso, mas pesquisei e fiz;
+- **Prisma** para banco de dados - também foi um assunto ainda não abordado no curso, mas aprendi vendo alguns tutoriais;
+- **Zod** para validação de dados;
+- **TypeScript**, claro que não podia faltar. Estou mais acostumado a usar TS e com certeza ajuda muito!
+
+Acredito que são apenas essas tecnologias, acho que não estou esquecendo de nada. 
+
+Gostei muito desse desafio e realmente a Rocketseat é muito diferente do resto do mercado! 

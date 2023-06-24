@@ -7,6 +7,7 @@ import {
   prismaGetUniqueMeals,
   prismaUpdateMeals,
 } from '../Model/modelMeals'
+import { metricsMeals } from '../utils/metricsMeals'
 
 async function createMeals(request: FastifyRequest, reply: FastifyReply) {
   const schemaCreateMeals = z.object({
@@ -159,4 +160,27 @@ async function deletarMeals(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-export { createMeals, updateMeals, getAllMeals, getUniqueMeals, deletarMeals }
+async function getMetrics(request: FastifyRequest, reply: FastifyReply) {
+  const schemaID = z.object({
+    sub: z.string(),
+  })
+  await request.jwtVerify()
+
+  const { sub } = schemaID.parse(request.user)
+
+  const responseGetAllMeals = await prismaGetAllMeals(sub)
+  const responseMetrics = metricsMeals(responseGetAllMeals)
+
+  reply.status(200).send({
+    metricas: responseMetrics,
+  })
+}
+
+export {
+  createMeals,
+  updateMeals,
+  getAllMeals,
+  getUniqueMeals,
+  deletarMeals,
+  getMetrics,
+}
