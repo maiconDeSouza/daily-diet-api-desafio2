@@ -22,15 +22,16 @@ async function prismaUpdateMeals(
   name: string,
   description: string,
   isDietMeal: boolean,
+  usersId: string,
 ) {
   const meal = await prismaClient.meals.findFirst({
     where: {
-      id: mealId,
+      AND: [{ id: mealId }, { usersId }],
     },
   })
-  const responseDB = await prismaClient.meals.update({
+  const responseDB = await prismaClient.meals.updateMany({
     where: {
-      id: mealId,
+      AND: [{ id: mealId }, { usersId }],
     },
     data: {
       name: name || meal?.name,
@@ -48,8 +49,23 @@ async function prismaGetAllMeals(usersId: string) {
       usersId,
     },
   })
-  console.log(responseDB)
+
   return responseDB
 }
 
-export { prismaCreateMeals, prismaUpdateMeals, prismaGetAllMeals }
+async function prismaGetUniqueMeals(usersId: string, mealsID: string) {
+  const responseDB = await prismaClient.meals.findMany({
+    where: {
+      AND: [{ usersId }, { id: mealsID }],
+    },
+  })
+
+  return responseDB
+}
+
+export {
+  prismaCreateMeals,
+  prismaUpdateMeals,
+  prismaGetAllMeals,
+  prismaGetUniqueMeals,
+}

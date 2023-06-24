@@ -3,6 +3,7 @@ import { z } from 'zod'
 import {
   prismaCreateMeals,
   prismaGetAllMeals,
+  prismaGetUniqueMeals,
   prismaUpdateMeals,
 } from '../Model/modelMeals'
 
@@ -51,7 +52,13 @@ async function updateMeals(request: FastifyRequest, reply: FastifyReply) {
   const schemaParams = z.object({
     mealId: z.string(),
   })
+
+  const schemaID = z.object({
+    sub: z.string(),
+  })
   await request.jwtVerify()
+
+  const { sub } = schemaID.parse(request.user)
 
   const { mealId } = schemaParams.parse(request.params)
   const { name, description, isDietMeal } = schemaCreateMeals.parse(
@@ -63,6 +70,7 @@ async function updateMeals(request: FastifyRequest, reply: FastifyReply) {
     name,
     description,
     isDietMeal,
+    sub,
   )
 
   if (responseUpdateMeals) {
@@ -98,4 +106,30 @@ async function getAllMeals(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-export { createMeals, updateMeals, getAllMeals }
+async function getUniqueMeals(request: FastifyRequest, reply: FastifyReply) {
+  const schemaID = z.object({
+    sub: z.string(),
+  })
+  const schemaParams = z.object({
+    mealId: z.string(),
+  })
+
+  await request.jwtVerify()
+  const { mealId } = schemaParams.parse(request.params)
+  const { sub } = schemaID.parse(request.user)
+
+  const responseGetUniqueMeals = await prismaGetUniqueMeals(sub, mealId)
+
+  if (responseGetUniqueMeals) {
+    reply.status(200).send({
+      message: `Lista da lista das últimas refeições!`,
+      meal: responseGetUniqueMeals,
+    })
+  } else {
+    reply.status(500).send({
+      message: `Ocorreu um erro inesperado!`,
+    })
+  }
+}
+
+export { createMeals, updateMeals, getAllMeals, getUniqueMeals }
