@@ -17,4 +17,29 @@ async function prismaCreateMeals(
   return responseDB
 }
 
-export { prismaCreateMeals }
+async function prismaUpdateMeals(
+  mealId: string,
+  name: string,
+  description: string,
+  isDietMeal: boolean,
+) {
+  const meal = await prismaClient.meals.findFirst({
+    where: {
+      id: mealId,
+    },
+  })
+  const responseDB = await prismaClient.meals.update({
+    where: {
+      id: mealId,
+    },
+    data: {
+      name: name || meal?.name,
+      description: description || meal?.description,
+      isDietMeal: isDietMeal || meal?.isDietMeal,
+    },
+  })
+
+  return responseDB
+}
+
+export { prismaCreateMeals, prismaUpdateMeals }
