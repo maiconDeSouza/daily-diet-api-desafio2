@@ -7,7 +7,7 @@ import {
   prismaCreateUsers,
 } from '../Model/modelUsers'
 
-async function createUser(request: FastifyRequest, replay: FastifyReply) {
+async function createUser(request: FastifyRequest, reply: FastifyReply) {
   const createUserSchema = z.object({
     name: z.string(),
     nickname: z.string(),
@@ -19,7 +19,7 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
   const result = createUserSchema.safeParse(request.body)
 
   if (!result.success) {
-    return replay.status(409).send(result.error)
+    return reply.status(409).send(result.error)
   }
 
   const { name, nickname, email, password, rPassword } = createUserSchema.parse(
@@ -27,7 +27,7 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
   )
 
   if (password !== rPassword) {
-    return replay.status(400).send({
+    return reply.status(400).send({
       message: `As senhas não coincidem`,
     })
   }
@@ -36,7 +36,7 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
   const responseEmail = await prismaCheckEmail(email)
 
   if (responseNickname || responseEmail) {
-    return replay.status(409).send({
+    return reply.status(409).send({
       message: `Nickname ou Email já em uso!`,
     })
   }
@@ -49,14 +49,51 @@ async function createUser(request: FastifyRequest, replay: FastifyReply) {
   )
 
   if (responseCreateUser) {
-    return replay.status(201).send({
+    return reply.status(201).send({
       message: `Usuário Criado com sucess!`,
     })
   } else {
-    replay.status(500).send({
+    reply.status(500).send({
       message: `Ocorreu um erro inesperado!`,
     })
   }
 }
 
-export { createUser }
+async function loginUser(request: FastifyRequest, reply: FastifyReply) {
+  const schemaLogin = z.object({
+    nickname: z.string(),
+    password: z.string(),
+  })
+
+  const { nickname, password } = schemaLogin.parse(request.body)
+
+  const responseNickname = await prismCheckNickname(nickname)
+
+  if (!responseNickname) {
+    return reply.status(400).send({
+      message: `Nickname ou Senha errados!`,
+    })
+  }
+
+  if (responseNickname.password !== (await cryptoPass(password))) {
+    return reply.status(400).send({
+      message: `Nickname ou Senha errados!`,
+    })
+  }
+
+  const token = await reply.jwtSign(
+    {},
+    {
+      sign: {
+        sub: responseNickname.id,
+      },
+    },
+  )
+
+  reply.status(200).send({
+    message: `Login feito com sucesso!`,
+    token,
+  })
+}
+
+export { createUser, loginUser }
