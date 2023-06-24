@@ -20,9 +20,12 @@ app.register(routeMeals, {
   prefix: 'meals',
 })
 
+const envPortSchema = z.string()
+const port = Number(envPortSchema.parse(process.env.PORT)) || 3000
+
 app
   .listen({
-    port: 2005,
+    port,
   })
   .then(() => {
     console.log(`The server is running!`)
