@@ -42,4 +42,14 @@ async function prismaUpdateMeals(
   return responseDB
 }
 
-export { prismaCreateMeals, prismaUpdateMeals }
+async function prismaGetAllMeals(usersId: string) {
+  const responseDB = await prismaClient.meals.findMany({
+    where: {
+      usersId,
+    },
+  })
+  console.log(responseDB)
+  return responseDB
+}
+
+export { prismaCreateMeals, prismaUpdateMeals, prismaGetAllMeals }

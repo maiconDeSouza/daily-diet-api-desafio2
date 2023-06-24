@@ -1,6 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { prismaCreateMeals, prismaUpdateMeals } from '../Model/modelMeals'
+import {
+  prismaCreateMeals,
+  prismaGetAllMeals,
+  prismaUpdateMeals,
+} from '../Model/modelMeals'
 
 async function createMeals(request: FastifyRequest, reply: FastifyReply) {
   const schemaCreateMeals = z.object({
@@ -72,4 +76,26 @@ async function updateMeals(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-export { createMeals, updateMeals }
+async function getAllMeals(request: FastifyRequest, reply: FastifyReply) {
+  const schemaID = z.object({
+    sub: z.string(),
+  })
+  await request.jwtVerify()
+
+  const { sub } = schemaID.parse(request.user)
+
+  const responseGetAllMeals = await prismaGetAllMeals(sub)
+
+  if (responseGetAllMeals) {
+    reply.status(200).send({
+      message: `Lista da lista das últimas refeições!`,
+      meals: responseGetAllMeals,
+    })
+  } else {
+    reply.status(500).send({
+      message: `Ocorreu um erro inesperado!`,
+    })
+  }
+}
+
+export { createMeals, updateMeals, getAllMeals }
